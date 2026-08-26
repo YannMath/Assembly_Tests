@@ -1,8 +1,6 @@
 section .data
     greeting1 db 'Hello', 0x0a, 0
-    greeting1Len equ $ - greeting1
-    greeting2 db 'World!', 0x0a
-    greeting2Len equ $ - greeting2
+    greeting2 db 'World!', 0x0a, 0
     newline db 0x0a
 
 section .text
@@ -10,19 +8,13 @@ section .text
 
 _start:
     mov rdi, greeting1
-    call strlen
+    call print
 
-    ;mov rdi, greeting1
-    ;mov rsi, greeting1Len
-    ;call print
+    mov rdi, greeting2
+    call print
 
-    ;mov rdi, greeting2
-    ;mov rsi, greeting2Len
-    ;call print
-
-    ;mov rdi, newline
-    ;mov rsi, 1 
-    ;call print
+    mov rdi, newline
+    call print
 
     mov rdi, rax
     mov rax, 60
@@ -31,8 +23,10 @@ _start:
 print:
     ;RDI = address of string
     ;RSI = length of string
-    mov rdx, rsi
-    mov rsi, rdi
+    mov rcx, rdi
+    call strlen
+    mov rdx, rax
+    mov rsi, rcx
     mov rax, 1
     mov rdi, 1
     syscall
